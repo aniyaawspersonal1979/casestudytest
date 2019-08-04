@@ -1,7 +1,7 @@
 ---
 - name: Installing Packages
   yum:
-    name: [docker, java-1.8.0-openjdk]
+    name: [docker, java-1.8.0-openjdk, git]
     state: present
   
 - name: Downloading the Jenkins package
