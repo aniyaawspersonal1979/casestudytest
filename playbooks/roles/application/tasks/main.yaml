@@ -1,0 +1,26 @@
+---
+- name: Installing Packages
+  yum:
+    name: [docker, java-1.8.0-openjdk]
+    state: present
+  
+- name: Downloading the Jenkins package
+  get_url:
+    url: https://pkg.jenkins.io/redhat/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Building customized image
+  template: src=Dockerfile dest=/tmp/Dockerfile
+
+- name: Extracting the content
+  shell: |
+    rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+    yum install jenkins -y
+    sed -i 's/JENKINS_USER="jenkins"/JENKINS_USER="root"/' /etc/sysconfig/jenkins
+    chown -R root:root /var/lib/jenkins/ /var/cache/jenkins /var/log/jenkins
+    chkconfig jenkins on && service jenkins restart
+    cd /tmp/ && docker build -t "springboot" .
+
+
+
+

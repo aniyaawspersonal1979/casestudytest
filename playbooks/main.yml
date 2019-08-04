@@ -1,0 +1,7 @@
+---
+
+# Installing respective applications
+- hosts: role_app
+  become: yes
+  roles:
+  - role: application
